@@ -1,0 +1,29 @@
+version: '3'
+services:
+  php0:
+    build:
+      context: ./
+      dockerfile: php.DockerFile
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./files:/var/www/html"
+      - "./secure:/var/secure"
+    depends_on:
+      - mysql0
+  mysql0:
+    image: mysql
+    environment:
+      MYSQL_USER: 'it635'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_DATABASE: 'db'
+    volumes: 
+      - "./data:/var/lib/mysql"
+    restart: always
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
